@@ -34,7 +34,8 @@ public class MenuButton {
         
         getButtonImage();
     }
-
+    
+    //Runs interaction when clicked
     public void runInteraction() {
         if (effectID.startsWith("toMenu:")) {
             gp.createMenu(Integer.parseInt(effectID.substring(7)));
@@ -43,7 +44,8 @@ public class MenuButton {
             gp.createLevel(Integer.parseInt(effectID.substring(10)));
         }
     }
-
+    
+    //Sets images based on spriteID
     public void getButtonImage() {
         switch (spriteID) {
             case 1:
@@ -61,7 +63,7 @@ public class MenuButton {
         }
     }
 
-    //Updates its display
+    //Updates its display if it is selected
     public void draw(Graphics2D g2, double GS) {
         g2.setFont(new Font("TimesRoman", Font.PLAIN, (int) (labelSize*GS)));
         if (isSelected) {
