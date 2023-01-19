@@ -16,7 +16,8 @@ public class NPC extends Entity {
     private int[] spritesIDs, rotationRange = {0, 360};
     GamePanel gp;
     Weapon weapon;
-
+    
+    //Creates NPC largely based on ID. spriteIDs is an array containing the indices of the sprites used
     public NPC(GamePanel gp, int x, int y, String ID, int[] spritesIDs) {
         this.gp = gp;
         this.x = x;
@@ -198,13 +199,15 @@ public class NPC extends Entity {
         }
     }
 
+    //Creates projectiles based on weapon used
     void shoot() {
         if (behaviorID.contains("agressive"))
             for (Projectile projectile : weapon.getProjectiles(this))
                 gp.level.projectiles.add(projectile);
         attackCoolDown = weapon.attackCoolDown;
     }
-
+    
+    //Damaging areas of effect are created around weapon
     void melee() {
         if (behaviorID.contains("agressive")) {
             if (attackCoolDown == 0) {
@@ -217,7 +220,8 @@ public class NPC extends Entity {
             }
         }
     }
-
+    
+    //Logical updates
     public void update() {
         if (health <= 0) {
             alive = false;
@@ -378,7 +382,8 @@ public class NPC extends Entity {
         hitBox.setX(x);
         hitBox.setY(y);
     }
-
+    
+    //Draws NPC sprite(s) if standard (moves around in four directions)
     void drawStandard(Graphics2D g2, double GS) {
         BufferedImage image = null;
         switch (direction) {
@@ -416,7 +421,8 @@ public class NPC extends Entity {
             }
         }
     }
-
+    
+    //Draws sprites if a turret (can't move but can rotate)
     void drawTurret(Graphics2D g2, double GS) {
         BufferedImage baseImage = gp.level.images[spritesIDs[0]];
         BufferedImage protrustionImage = gp.level.images[spritesIDs[1]];
@@ -424,7 +430,8 @@ public class NPC extends Entity {
         main.ImageUtils.drawRotatedImage(g2, protrustionImage, 180-rotation, x-gp.player.x+gp.player.onScreenX, y-gp.player.y+gp.player.onScreenY, width, height, x+width/2-gp.player.x+gp.player.onScreenX, y+height/2-gp.player.y+gp.player.onScreenY, GS);
         g2.drawImage(baseImage, (int) ((x-gp.player.x+gp.player.onScreenX)*GS), (int) ((y-gp.player.y+gp.player.onScreenY)*GS), (int) (width*GS), (int) (height*GS), null);
     }
-
+    
+    //Calls the proper, specific draw method
     public void draw(Graphics2D g2, double GS) {
         switch (appearanceStyle) {
             case "standard":
