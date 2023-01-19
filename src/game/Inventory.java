@@ -16,7 +16,8 @@ public class Inventory {
         for (int i = 0; i < weapons.size(); i++)
             slots[i] = weapons.get(i);
     }
-
+    
+    //Equips item based on the slot given
     public Weapon equipItem(int slot) {
         if (slots[slot-1] != null) {
             slotEquipped = slot;
@@ -24,7 +25,8 @@ public class Inventory {
         }
         return gp.player.weapon;
     }
-
+    
+    //Returns true if the player has the item/weapon given based the item ID
     public boolean hasItem(String item) {
         for (Weapon weapon : weapons) {
             if (weapon.ID.equals(item))
@@ -33,6 +35,7 @@ public class Inventory {
         return false;
     }
 
+    //Adds a certain amount of an item
     public void addItem(String item) {
         //Index of the colon which marks the amount of items to be given
         int colonIdex = item.indexOf(':');
