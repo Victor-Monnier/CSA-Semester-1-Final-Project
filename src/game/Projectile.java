@@ -96,7 +96,7 @@ public class Projectile {
             if (main.CollisionChecker.checkCollision(hitBox, gp.level.npcs.get(npcIndex).hitBox) && isPlayerProjectile) {
                 switch (ID) {
                     case "magic":
-                        gp.level.npcs.get(npcIndex).damage(1000);
+                        gp.level.npcs.get(npcIndex).damage(10);
                         alive = false;
                         break;
                     case "fire":
