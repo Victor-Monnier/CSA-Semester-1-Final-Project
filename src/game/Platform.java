@@ -31,14 +31,16 @@ public class Platform {
 
         image = level.images[spriteID];
     }
-
+    
+    //Updates properties of hitbox
     public void updateHitBox() {
         hitBox.setX(x);
         hitBox.setY(y);
         hitBox.setWidth(width);
         hitBox.setHeight(height);
     }
-
+    
+    //Logical updates for platform
     public void update() {
         x += xSpeed;
         y += ySpeed;
