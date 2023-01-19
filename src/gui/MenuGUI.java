@@ -22,6 +22,7 @@ public class MenuGUI {
     ArrayList<MenuButton> generalButtons = new ArrayList<MenuButton>();
     ArrayList<String> dialogue = new ArrayList<String>();
     
+    //GUI is determined by gp.menuID
     public MenuGUI(GamePanel gp) {
         this.gp = gp;
         this.ID = gp.menuID;
