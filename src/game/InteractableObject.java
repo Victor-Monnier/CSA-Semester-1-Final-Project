@@ -19,7 +19,8 @@ public class InteractableObject {
     public String animationID, interactionID, popUpText; 
     public boolean alive = true;
     double GS;
-
+    
+    //If there is a pop-up message
     public InteractableObject(GamePanel gp, Level level, int x, int y, int width, int height, int timesUsed, int spriteID, String animationID, String interactionID, String popUpText) {
         this.gp = gp;
         this.level = level;
@@ -38,7 +39,7 @@ public class InteractableObject {
 
         hitBox = new Rectangle(x, y, width, height);
     }
-
+    //If there is NOT a pop-up message
     public InteractableObject(GamePanel gp, Level level, int x, int y, int width, int height, int timesUsed, int spriteID, String animationID, String interactionID) {
         this.gp = gp;
         this.level = level;
@@ -56,7 +57,8 @@ public class InteractableObject {
 
         hitBox = new Rectangle(x, y, width, height);
     }
-
+    
+    //When interacted with by player
     public void runInteraction() {
         if (interactionID.contains("openDialogue:")) {
             gp.createMenu(300+Integer.parseInt(interactionID.substring(13)));
@@ -83,6 +85,7 @@ public class InteractableObject {
             alive = false;
     }
     
+    //Logical updates
     public void update() {
         switch (animationID) {
             case "spin":
