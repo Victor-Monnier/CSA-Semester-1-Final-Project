@@ -90,7 +90,8 @@ public class Player extends Entity {
         fireDuration = 0;
         gp.createLevel(gp.level.ID);
     }
-
+    
+    //All logical updates for player
     public void update () {
         if (health <= 0)
             die();
@@ -289,7 +290,8 @@ public class Player extends Entity {
             spriteCounter = 0;
         }
     }
-
+    
+    //Draws sprite(s)
     public void draw (Graphics2D g2, double GS) {
         //Main player image
         BufferedImage image = null;
