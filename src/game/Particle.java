@@ -29,7 +29,8 @@ public class Particle {
                 image = gp.particle_1;
         }
     }
-
+    
+    //Logical updates for particle
     public void update() {
         switch (ID) {
             case "fire":
