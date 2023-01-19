@@ -20,7 +20,8 @@ public class MenuBG {
         this.spriteID = spriteID;
         getBGImage();
     }
-
+    
+    //Gets images based on spriteID
     public void getBGImage() {
         switch (spriteID) {
             //Game backgrounds
@@ -34,7 +35,8 @@ public class MenuBG {
                 image = gp.menu_background_1;;
         }
     }
-
+    
+    //Draws sprite
     public void draw (Graphics2D g2, double GS) {
         g2.drawImage(image, (int) (x*GS), (int) (y*GS), (int) (width*GS), (int) (height*GS), null);
     }
