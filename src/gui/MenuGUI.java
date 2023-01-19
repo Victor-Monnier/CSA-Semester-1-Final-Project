@@ -21,7 +21,7 @@ public class MenuGUI {
     MenuBG bg;
     ArrayList<MenuButton> generalButtons = new ArrayList<MenuButton>();
     ArrayList<String> dialogue = new ArrayList<String>();
-
+    
     public MenuGUI(GamePanel gp) {
         this.gp = gp;
         this.ID = gp.menuID;
@@ -177,7 +177,8 @@ public class MenuGUI {
         //Variables involving buttons generally
         buttonAmount = generalButtons.size();
     }
-
+    
+    //Logical updates
     public int update() {
         //Binds the new key
         if (this.ID == 23) {
@@ -263,7 +264,8 @@ public class MenuGUI {
 
         return(0);
     }
-
+    
+    //Draws all parts of the GUI
     public void draw(Graphics2D g2, double GS) {
         //Background
         if (bg != null) 
