@@ -12,7 +12,8 @@ public class Weapon {
     public double manaUsed;
     BufferedImage imageLeft, imageRight;
     GamePanel gp;
-
+    
+    //Creates new weapon based on ID alone
     public Weapon(GamePanel gp, String ID) {
         this.gp = gp;
         this.ID = ID;
@@ -120,7 +121,8 @@ public class Weapon {
                 break;
         }
     }
-
+    
+    //Gets projectiles for shooting of owned by player
     public Projectile[] getProjectiles(Player player) {
         int[] weaponEnd = getEnd(gp.player);
         switch (ID) {
@@ -151,7 +153,8 @@ public class Weapon {
     }
     return null;
     }
-
+    
+    //Gets projectiles for shooting of owned by an npc/enemy
     public Projectile[] getProjectiles(NPC npc) {
         int[] weaponEnd = getEnd(npc);
         switch (ID) {
@@ -168,14 +171,16 @@ public class Weapon {
         }
         return null;
     }
-
+    
+    //Gets the end of the weapon if owned by player
     public int[] getEnd(Player player) {
         int endX = (int) (player.x+player.width/2+(x+width)*Math.cos(Math.toRadians(gp.mouseAngle)));
         int endY = (int) (player.y+player.height/2-(y+height/2)*Math.sin(Math.toRadians(gp.mouseAngle)));
         int[] end = {endX, endY};
         return end;
     }
-
+    
+    //Gets the end of the weapon if owned by an npc/enemy
     public int[] getEnd(NPC npc) {
         int endX = (int) (npc.x+npc.width/2+(x+width)*Math.cos(Math.toRadians(npc.rotation)));
         int endY = (int) (npc.y+npc.height/2-(y+height/2)*Math.sin(Math.toRadians(npc.rotation)));
