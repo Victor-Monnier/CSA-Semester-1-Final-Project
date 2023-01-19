@@ -186,7 +186,8 @@ public class Level {
     
         FC = new FlagChecker(gp, this);
     }
-
+    
+    //Gets images specific to the level based on the level ID
     public void getImages() {
         System.out.println("Loading graphics... ");
         gp.loadingGraphics = true;
@@ -282,7 +283,8 @@ public class Level {
     public void addNPC(int x, int y, String npcID, int[] spriteIDs) {
         npcs.add(new NPC(gp, x, y, npcID, spriteIDs));
     }
-
+    
+    //Coordinates logical updates
     public void update() {
         //Updates time in frames
         time++;
@@ -356,7 +358,8 @@ public class Level {
         }
         
     }
-
+    
+    //Draws everything in the level by calling specific methods
     public void draw(Graphics2D g2, double GS) {
         //Background
         if (levelBG != null)
@@ -389,10 +392,10 @@ public class Level {
         levelBG.drawForeground(g2, GS);
         HUD.draw(g2, gp, GS);
     }
-
+    
+    //Events that happen in the level, like a platform moving downward
     public void levelEvents() {
         for (int flagIndex = 0; flagIndex < flags.size(); flagIndex++) {
-            //System.out.println("Flag: "+flags.get(flagIndex));
             if (time > 0) {
                 FC.check(flags.get(flagIndex));
             }
