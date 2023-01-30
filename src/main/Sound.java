@@ -14,8 +14,8 @@ public class Sound {
     FloatControl fc;
 
     public Sound() {
-        //soundURL[0] = getClass().getResource("/res/audio/bruh.wav");
-        //soundURL[1] = getClass().getResource("/res/audio/enemy_death.wav");
+        soundURL[0] = getClass().getResource("/res/audio/bruh.wav");
+        soundURL[1] = getClass().getResource("/res/audio/enemy_death.wav");
     }
 
     public void setFile(int i) {

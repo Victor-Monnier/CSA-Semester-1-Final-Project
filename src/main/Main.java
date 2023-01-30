@@ -19,7 +19,7 @@ public class Main{
         //Setting properties of window
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setTitle("Sand Simulator");
+        window.setTitle("Victor Monnier CSA Final Project Semester 1");
         window.setFocusTraversalKeysEnabled(false); 
 
         //Adding gamePanel, which actually controls the application
