@@ -1,5 +1,9 @@
-//By Victor Monnier for CSA 5th hour Final Project Semester 1
-//Completed on 1/19/2023
+///////////////////////////////////////
+//  |         |     -----     |---\  //
+//  |    |    |       |       |   |  //
+//  |    |    |       |       |---/  //
+//   \__/ \__/      -----     |      //
+///////////////////////////////////////
 
 package main;
 
@@ -15,7 +19,7 @@ public class Main{
         //Setting properties of window
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setTitle("Victor Monnier CSA Final Project Semester 1");
+        window.setTitle("Sand Simulator");
         window.setFocusTraversalKeysEnabled(false); 
 
         //Adding gamePanel, which actually controls the application

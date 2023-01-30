@@ -1,24 +1,18 @@
 package main;
 
-import javax.imageio.ImageIO;
+//import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import game.*;
-import data.*;
-import gui.MenuGUI;
+//import java.awt.image.BufferedImage;
+//import java.io.IOException;
 
 public class GamePanel extends JPanel implements Runnable {
     //Game Globals
-    public boolean isFullScreen = false, hasChangedMenu = false, loadingGraphics = false,
+    public boolean isFullScreen = false,
     mouseLeftClicked = false, mouseLeftPressed = false, mouseRightClicked = false, mouseRightPressed = false, mouseScrolled = false;
-    public int levelID = 1, menuID = 0, 
-    xMovement = 0, yMovement = 0,
-    mouseX = 0, mouseY = 0, mouseAngle, mouseScrollAmount,
-    timeInTrial;
+    public int menuID = 0, 
+    mouseX = 0, mouseY = 0, mouseScrollAmount;
     public enum GameState {PLAYING, INMENU, PAUSED, INGAMEMENU}
     public GameState gameState = GameState.PLAYING;
 
@@ -26,64 +20,23 @@ public class GamePanel extends JPanel implements Runnable {
     public int 
     screenWidth = 1600, /* 16:9 Aspect Ratio (fixed) */
     screenHeight = 900,
-    FPS = 256, /* Amount of graphical updates per second */
+    FPS = 60, /* Amount of graphical updates per second */
     volume = 50;
     public double GS = screenHeight/900.0; /* graphics scaling: all graphics are same relative size and position regardless of screen size */
 
     //Preloads commonly used sprites. This only works when a limited amount of graphics
-    public BufferedImage    main_menu_background, menu_background_1, //Backgrounds
-                            gui_button_1, gui_button_1_selected, gui_item_slot, gui_item_slot_selected, //GUI
-                            coin, heart, heart_plus, crystal, crystal_plus,
-                            player_down_1, player_down_2, player_left_1, player_left_2, player_right_1, player_right_2, player_up_1, player_up_2, //Player
-                            stick_left, stick_right, magic_stick_left, magic_stick_right, fire_stick_left, fire_stick_right, power_stick_left, power_stick_right, lifeSteal_stick_left, lifeSteal_stick_right, //Items
-                            particle_1, //Particle
-                            projectile_1, projectile_2, projectile_3, //Projectiles
-                            hit_box; //Used for testing
+    /*public BufferedImage    
     public void getCommonImages() {
         try {
-            main_menu_background = ImageIO.read(getClass().getResourceAsStream("/res/background/menu/main_menu.jpg"));
-            menu_background_1 = ImageIO.read(getClass().getResourceAsStream("/res/background/menu/menu_1.png"));
-            gui_button_1 = ImageIO.read(getClass().getResourceAsStream("/res/gui/button_1.jpg"));
-            gui_button_1_selected = ImageIO.read(getClass().getResourceAsStream("/res/gui/button_1_selected.jpg"));
-            gui_item_slot = ImageIO.read(getClass().getResourceAsStream("/res/gui/item_slot.png"));
-            gui_item_slot_selected = ImageIO.read(getClass().getResourceAsStream("/res/gui/item_slot_selected.png"));
-            coin = ImageIO.read(getClass().getResourceAsStream("/res/icon/coin.png"));
-            heart = ImageIO.read(getClass().getResourceAsStream("/res/icon/heart.png"));
-            heart_plus = ImageIO.read(getClass().getResourceAsStream("/res/icon/heart_plus.png"));
-            crystal = ImageIO.read(getClass().getResourceAsStream("/res/icon/crystal.png"));
-            crystal_plus = ImageIO.read(getClass().getResourceAsStream("/res/icon/crystal_plus.png"));
-            player_down_1 = ImageIO.read(getClass().getResourceAsStream("/res/entity/player/player_down_1.png"));
-            player_down_2 = ImageIO.read(getClass().getResourceAsStream("/res/entity/player/player_down_2.png"));
-            player_left_1 = ImageIO.read(getClass().getResourceAsStream("/res/entity/player/player_left_1.png"));
-            player_left_2 = ImageIO.read(getClass().getResourceAsStream("/res/entity/player/player_left_2.png"));
-            player_right_1 = ImageIO.read(getClass().getResourceAsStream("/res/entity/player/player_right_1.png"));
-            player_right_2 = ImageIO.read(getClass().getResourceAsStream("/res/entity/player/player_right_2.png"));
-            player_up_1 = ImageIO.read(getClass().getResourceAsStream("/res/entity/player/player_up_1.png"));
-            player_up_2 = ImageIO.read(getClass().getResourceAsStream("/res/entity/player/player_up_2.png"));
-            stick_left = ImageIO.read(getClass().getResourceAsStream("/res/game_object/item/stick_left.png"));
-            stick_right = ImageIO.read(getClass().getResourceAsStream("/res/game_object/item/stick_right.png"));
-            magic_stick_left = ImageIO.read(getClass().getResourceAsStream("/res/game_object/item/magic_stick_left.png"));
-            magic_stick_right = ImageIO.read(getClass().getResourceAsStream("/res/game_object/item/magic_stick_right.png"));
-            fire_stick_left = ImageIO.read(getClass().getResourceAsStream("/res/game_object/item/fire_stick_left.png"));
-            fire_stick_right = ImageIO.read(getClass().getResourceAsStream("/res/game_object/item/fire_stick_right.png"));
-            power_stick_left = ImageIO.read(getClass().getResourceAsStream("/res/game_object/item/power_stick_left.png"));
-            power_stick_right = ImageIO.read(getClass().getResourceAsStream("/res/game_object/item/power_stick_right.png"));
-            lifeSteal_stick_left = ImageIO.read(getClass().getResourceAsStream("/res/game_object/item/life-steal_stick_left.png"));
-            lifeSteal_stick_right = ImageIO.read(getClass().getResourceAsStream("/res/game_object/item/life-steal_stick_right.png"));
-            particle_1 = ImageIO.read(getClass().getResourceAsStream("/res/game_object/particle/particle_1.png"));
-            projectile_1 = ImageIO.read(getClass().getResourceAsStream("/res/game_object/projectile/projectile_1.png"));
-            projectile_2 = ImageIO.read(getClass().getResourceAsStream("/res/game_object/projectile/projectile_2.png"));
-            projectile_3 = ImageIO.read(getClass().getResourceAsStream("/res/game_object/projectile/projectile_3.png"));
-            hit_box = ImageIO.read(getClass().getResourceAsStream("/res/wip/hit_box.png"));
+           // main_menu_background = ImageIO.read(getClass().getResourceAsStream("/res/background/menu/main_menu.jpg"));
+           System.out.println("loading images");
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     //Keyboard
     public KeyHandler keyH = new KeyHandler();
-    //Codes for actions
-    public String jumpCode = "SPACE", upCode = "W", downCode = "S", leftCode = "A", rightCode = "D", interactCode = "R", inventoryCode = "E", equip1Code = "1", equip2Code = "2", equip3Code = "3", equip4Code = "4", equip5Code = "5";
     //Keys for menu interaction
     Action upArrowPressedAction = keyH.new UpArrowPressedAction();
     Action upArrowReleasedAction = keyH.new UpArrowReleasedAction();
@@ -97,52 +50,22 @@ public class GamePanel extends JPanel implements Runnable {
     Action enterReleasedAction = keyH.new EnterReleasedAction();
     Action escapePressedAction = keyH.new EscapePressedAction();
     Action escapeReleasedAction = keyH.new EscapeReleasedAction();
-    //Movement
-    Action jumpPressedAction = keyH.new JumpPressedAction();
-    Action jumpReleasedAction = keyH.new JumpReleasedAction();
-    Action upPressedAction = keyH.new UpPressedAction();
-    Action upReleasedAction = keyH.new UpReleasedAction();
-    Action downPressedAction = keyH.new DownPressedAction();
-    Action downReleasedAction = keyH.new DownReleasedAction();
-    Action leftPressedAction = keyH.new LeftPressedAction();
-    Action leftReleasedAction = keyH.new LeftReleasedAction();
-    Action rightPressedAction = keyH.new RightPressedAction();
-    Action rightReleasedAction = keyH.new RightReleasedAction();
-    //Misc
-    Action interactPressedAction = keyH.new InteractPressedAction();
-    Action interactReleasedAction = keyH.new InteractReleasedAction();
-    Action equip1PressedAction = keyH.new equip1PressedAction();
-    Action equip2PressedAction = keyH.new equip2PressedAction();
-    Action equip3PressedAction = keyH.new equip3PressedAction();
-    Action equip4PressedAction = keyH.new equip4PressedAction();
-    Action equip5PressedAction = keyH.new equip5PressedAction();
-    //Used for setting keybindings
-    Action qAction = keyH.new QAction(); //First row
-    Action wAction = keyH.new WAction();
-    Action eAction = keyH.new EAction();
-    Action rAction = keyH.new RAction();
-    Action tAction = keyH.new TAction();
-    Action yAction = keyH.new YAction();
-    Action uAction = keyH.new UAction();
-    Action iAction = keyH.new IAction();
-    Action oAction = keyH.new OAction();
-    Action pAction = keyH.new PAction();
-    Action aAction = keyH.new AAction(); //Second row
-    Action sAction = keyH.new SAction();
-    Action dAction = keyH.new DAction();
-    Action fAction = keyH.new FAction();
-    Action gAction = keyH.new GAction();
-    Action hAction = keyH.new HAction();
-    Action jAction = keyH.new JAction();
-    Action kAction = keyH.new KAction();
-    Action lAction = keyH.new LAction();
-    Action zAction = keyH.new ZAction(); //Third row
-    Action xAction = keyH.new XAction();
-    Action cAction = keyH.new CAction();
-    Action vAction = keyH.new VAction();
-    Action bAction = keyH.new BAction();
-    Action nAction = keyH.new NAction();
-    Action mAction = keyH.new MAction();
+    //Selecting elements
+    Action equip1PressedAction = keyH.new Equip1PressedAction();
+    Action equip2PressedAction = keyH.new Equip2PressedAction();
+    Action equip3PressedAction = keyH.new Equip3PressedAction();
+    Action equip4PressedAction = keyH.new Equip4PressedAction();
+    Action equip5PressedAction = keyH.new Equip5PressedAction();
+    Action equip6PressedAction = keyH.new Equip6PressedAction();
+    Action equip7PressedAction = keyH.new Equip7PressedAction();
+    Action equip8PressedAction = keyH.new Equip8PressedAction();
+    Action equip9PressedAction = keyH.new Equip9PressedAction();
+    //Game speed
+    Action increaseGameSpeedPressedAction = keyH.new IncreaseGameSpeedPressedAction();
+    Action increaseGameSpeedReleasedAction = keyH.new IncreaseGameSpeedReleasedAction();
+    Action decreaseGameSpeedPressedAction = keyH.new DecreaseGameSpeedPressedAction();
+    Action decreaseGameSpeedReleasedAction = keyH.new DecreaseGameSpeedReleasedAction();
+    Action pauseGameSpeedPressedAction = keyH.new PauseGameSpeedPressedAction();
     //JComponent that the keybinds are added to
     JComponent thisWindow = Main.window.getRootPane();
     public void updateKeyBindings() {
@@ -171,158 +94,51 @@ public class GamePanel extends JPanel implements Runnable {
 		thisWindow.getActionMap().put("escapePressed", escapePressedAction);
         thisWindow.getInputMap().put(KeyStroke.getKeyStroke("released ESCAPE"), "escapeReleased");
 		thisWindow.getActionMap().put("escapeReleased", escapeReleasedAction);
-        //Movement
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke(jumpCode), "jumpPressed");
-		thisWindow.getActionMap().put("jumpPressed", jumpPressedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("released "+jumpCode), "jumpReleased");
-		thisWindow.getActionMap().put("jumpReleased", jumpReleasedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke(upCode), "upPressed");
-		thisWindow.getActionMap().put("upPressed", upPressedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("released "+upCode), "upReleased");
-		thisWindow.getActionMap().put("upReleased", upReleasedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke(downCode), "downPressed");
-		thisWindow.getActionMap().put("downPressed", downPressedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("released "+downCode), "downReleased");
-		thisWindow.getActionMap().put("downReleased", downReleasedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke(leftCode), "leftPressed");
-		thisWindow.getActionMap().put("leftPressed", leftPressedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("released "+leftCode), "leftReleased");
-		thisWindow.getActionMap().put("leftReleased", leftReleasedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke(rightCode), "rightPressed");
-		thisWindow.getActionMap().put("rightPressed", rightPressedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("released "+rightCode), "rightReleased");
-		thisWindow.getActionMap().put("rightReleased", rightReleasedAction);
-        //Misc
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke(interactCode), "interactPressed");
-		thisWindow.getActionMap().put("interactPressed", interactPressedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("released "+interactCode), "interactReleased");
-		thisWindow.getActionMap().put("interactReleased", interactReleasedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke(equip1Code), "equip1Pressed");
+        //Selecting elements
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("1"), "equip1Pressed");
 		thisWindow.getActionMap().put("equip1Pressed", equip1PressedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke(equip2Code), "equip2Pressed");
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("2"), "equip2Pressed");
 		thisWindow.getActionMap().put("equip2Pressed", equip2PressedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke(equip3Code), "equip3Pressed");
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("3"), "equip3Pressed");
 		thisWindow.getActionMap().put("equip3Pressed", equip3PressedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke(equip4Code), "equip4Pressed");
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("4"), "equip4Pressed");
 		thisWindow.getActionMap().put("equip4Pressed", equip4PressedAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke(equip5Code), "equip5Pressed");
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("5"), "equip5Pressed");
 		thisWindow.getActionMap().put("equip5Pressed", equip5PressedAction);
-    }
-    //Used for setting keybindings
-    public void createKeyStrokeDetectors() {
-        //Moves left to right, top to bottom on standard keyboard
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("Q"), "qAction");
-		thisWindow.getActionMap().put("qAction", qAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("W"), "wAction");
-		thisWindow.getActionMap().put("wAction", wAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("E"), "eAction");
-		thisWindow.getActionMap().put("eAction", eAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("R"), "rAction");
-		thisWindow.getActionMap().put("rAction", rAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("T"), "tAction");
-		thisWindow.getActionMap().put("tAction", tAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("Y"), "yAction");
-		thisWindow.getActionMap().put("yAction", yAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("U"), "uAction");
-		thisWindow.getActionMap().put("uAction", uAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("I"), "iAction");
-		thisWindow.getActionMap().put("iAction", iAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("O"), "oAction");
-		thisWindow.getActionMap().put("oAction", oAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("P"), "pAction");
-		thisWindow.getActionMap().put("pAction", pAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("A"), "aAction");
-		thisWindow.getActionMap().put("aAction", aAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("S"), "sAction");
-		thisWindow.getActionMap().put("sAction", sAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("D"), "dAction");
-		thisWindow.getActionMap().put("dAction", dAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("F"), "fAction");
-		thisWindow.getActionMap().put("fAction", fAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("G"), "gAction");
-		thisWindow.getActionMap().put("gAction", gAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("H"), "hAction");
-		thisWindow.getActionMap().put("hAction", hAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("J"), "jAction");
-		thisWindow.getActionMap().put("jAction", jAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("K"), "kAction");
-		thisWindow.getActionMap().put("kAction", kAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("L"), "lAction");
-		thisWindow.getActionMap().put("lAction", lAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("Z"), "zAction");
-		thisWindow.getActionMap().put("zAction", zAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("X"), "xAction");
-		thisWindow.getActionMap().put("xAction", xAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("C"), "cAction");
-		thisWindow.getActionMap().put("cAction", cAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("V"), "vAction");
-		thisWindow.getActionMap().put("vAction", vAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("B"), "bAction");
-		thisWindow.getActionMap().put("bAction", bAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("N"), "nAction");
-		thisWindow.getActionMap().put("nAction", nAction);
-        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("M"), "mAction");
-		thisWindow.getActionMap().put("mAction", mAction);
-    }
-    //Clears keybinds for setting keys
-    public void resetKeyBindings() {
-        thisWindow.getActionMap().put("qAction", null);
-        thisWindow.getActionMap().put("wAction", null);
-        thisWindow.getActionMap().put("eAction", null);
-        thisWindow.getActionMap().put("rAction", null);
-        thisWindow.getActionMap().put("tAction", null);
-        thisWindow.getActionMap().put("yAction", null);
-        thisWindow.getActionMap().put("uAction", null);
-        thisWindow.getActionMap().put("iAction", null);
-        thisWindow.getActionMap().put("oAction", null);
-        thisWindow.getActionMap().put("pAction", null);
-        thisWindow.getActionMap().put("aAction", null);
-        thisWindow.getActionMap().put("sAction", null);
-        thisWindow.getActionMap().put("dAction", null);
-        thisWindow.getActionMap().put("fAction", null);
-        thisWindow.getActionMap().put("gAction", null);
-        thisWindow.getActionMap().put("hAction", null);
-        thisWindow.getActionMap().put("jAction", null);
-        thisWindow.getActionMap().put("kAction", null);
-        thisWindow.getActionMap().put("lAction", null);
-        thisWindow.getActionMap().put("zAction", null);
-        thisWindow.getActionMap().put("xAction", null);
-        thisWindow.getActionMap().put("cAction", null);
-        thisWindow.getActionMap().put("vAction", null);
-        thisWindow.getActionMap().put("bAction", null);
-        thisWindow.getActionMap().put("nAction", null);
-        thisWindow.getActionMap().put("mAction", null);
-        
-        updateKeyBindings();
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("6"), "equip6Pressed");
+		thisWindow.getActionMap().put("equip6Pressed", equip6PressedAction);
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("7"), "equip7Pressed");
+		thisWindow.getActionMap().put("equip7Pressed", equip7PressedAction);
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("8"), "equip8Pressed");
+		thisWindow.getActionMap().put("equip8Pressed", equip8PressedAction);
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("9"), "equip9Pressed");
+		thisWindow.getActionMap().put("equip9Pressed", equip9PressedAction);
+        //Game speed
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("UP"), "incSpeedPressed");
+		thisWindow.getActionMap().put("incSpeedPressed", increaseGameSpeedPressedAction);
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("released UP"), "incSpeedReleased");
+		thisWindow.getActionMap().put("incSpeedReleased", increaseGameSpeedReleasedAction);
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"), "incSpeedPressed");
+		thisWindow.getActionMap().put("incSpeedPressed", increaseGameSpeedPressedAction);
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("released RIGHT"), "incSpeedReleased");
+		thisWindow.getActionMap().put("incSpeedReleased", increaseGameSpeedReleasedAction);
+		thisWindow.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "decSpeedReleased");
+		thisWindow.getActionMap().put("decSpeedReleased", decreaseGameSpeedPressedAction);
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("released DOWN"), "decSpeedPressed");
+		thisWindow.getActionMap().put("decSpeedPressed", decreaseGameSpeedReleasedAction);
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "decSpeedReleased");
+		thisWindow.getActionMap().put("decSpeedReleased", decreaseGameSpeedPressedAction);
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("released LEFT"), "decSpeedPressed");
+		thisWindow.getActionMap().put("decSpeedPressed", decreaseGameSpeedReleasedAction);
+        thisWindow.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "pausePressed");
+		thisWindow.getActionMap().put("pausePressed", pauseGameSpeedPressedAction);
     }
 
     //Mouse
     MouseHandler mouseH = new MouseHandler(this, GS);
+    game.Game game = new game.Game(keyH, mouseH);
     Sound sound = new Sound();
     Thread gameThread;
-    public Player player;
-
-    //Level which controls what happens specifically while the game runs
-    public Level level;
-    //Loads specific level from ID. If levelID <= 0, it is related to menus.
-    public void createLevel(int ID) {
-        gameState = GameState.PLAYING;
-        this.levelID = ID;
-        //Creates level
-        level = new Level(this, keyH, levelID);
-    }
-
-    //Menus, specifically (not just text on screen)
-    MenuGUI menuGUI;
-    //The GUI
-    public void createMenu(int menuID) {
-        this.menuID = menuID;
-        //Creates menu, which also updates game state
-        menuGUI = new MenuGUI(this);
-    }
-
-    //Used for saving and loading data
-    public SaveLoad saveLoad = new SaveLoad(this);
 
     //Used in other classes where GameState can't be accessed
     public void setGameState(String thisGameState) {
@@ -358,17 +174,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     public GamePanel() {
         //System stuff
-        getCommonImages();
-        createMenu(0); //Starts on main menu
+        //getCommonImages();
 
-        //Loading/updating settings
-        //saveLoad.saveSettings();
-        saveLoad.loadSettings();
+        //playSF(0);
         updateKeyBindings();
-
-        //Game related        
-        player = new Player(this, keyH, 200, 200);;
-        playSF(0);
         
         //Scaling for fullscreen requires additional information, so it comes last
         if (isFullScreen)
@@ -413,7 +222,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void run() {
         double drawInterval = 1000000000/FPS;
         double drawDelta = 0;
-        double updateInterval = 1000000000/60;
+        double updateInterval = 1000000000/1000;
         double updateDelta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -438,9 +247,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             //Graphical updates
             if (drawDelta >= 1) {
-                if (!loadingGraphics) {
-                    repaint();
-                }
+                repaint();
                 drawDelta--;
                 drawCount++;
             }
@@ -461,14 +268,10 @@ public class GamePanel extends JPanel implements Runnable {
         switch (gameState) {
             case INMENU:
             case PAUSED:
-                menuGUI.update();
                 break;
             case INGAMEMENU:
-                player.canInteract = false;
-                menuGUI.update();
             case PLAYING:
-                player.update();
-                level.update();
+                game.update();
                 break;
         }
 
@@ -482,23 +285,13 @@ public class GamePanel extends JPanel implements Runnable {
         mouseY = mouseH.mouseY;
         mouseScrollAmount = mouseH.mouseScrollAmount;
 
-        //The angle from the mouse position to the player
-        if (mouseX<player.onScreenX+player.width/2) {
-            mouseAngle = 180 + (int) Math.toDegrees(Math.atan((-mouseY+player.onScreenY+player.height/2)/(mouseX-player.onScreenX-player.width/2+0.00001)));
-        }
-        else {
-            mouseAngle = (int) Math.toDegrees(Math.atan((-mouseY+player.onScreenY+player.height/2)/(mouseX-player.onScreenX-player.width/2+0.00001)));
-        }
-
         //Resets variables that only last for one update
-        hasChangedMenu = false;
         mouseH.mouseLeftClicked = false;
         mouseH.mouseRightClicked = false;
         mouseH.mouseScrolled = false;
         mouseH.mouseScrollAmount = 0;
         keyH.escapePressed = false;
         keyH.enterPressed = false;
-        keyH.anyKeyPressed = false;
         keyH.lastKeyPressed = null;
     }
 
@@ -512,20 +305,7 @@ public class GamePanel extends JPanel implements Runnable {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); 
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); 
 
-        //Draws canvas based on game state
-        switch (gameState) {
-            case PLAYING:
-                if (level != null)
-                    level.draw(g2, GS);
-                break;
-            case PAUSED:
-            case INGAMEMENU:
-                if (level != null)
-                    level.draw(g2, GS);
-            case INMENU:
-                menuGUI.draw(g2, GS);
-                break;
-        }
+        game.draw(g2);        
 
         g2.dispose();
     }
