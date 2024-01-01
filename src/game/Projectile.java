@@ -88,7 +88,7 @@ public class Projectile {
                     gp.player.fireDuration += 11;
                     break;
                 case "power":
-                    gp.player.damage(25);
+                    gp.player.damage(1000);
                     break;
             }
         }
